@@ -1,13 +1,11 @@
-document.querySelector('.send-buton').addEventListener('click', async () => {
+document.querySelector('.send-button').addEventListener('click', async () => {
   const input = document.querySelector('.chat-input');
   const message = input.value.trim();
   if (!message) return;
 
-  // Show user's message in the chatbox
   const chatbox = document.getElementById('chatbox');
   chatbox.innerHTML += `<div>You: ${message}</div>`;
 
-  // Send to backend
   try {
       const response = await fetch('/chat', {
           method: 'POST',
