@@ -5,19 +5,17 @@ document.querySelector('.send-button').addEventListener('click', () => {
   if (!message) return;
 
   fetch('/chat', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({message})
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ message })
   })
-  .then(response => response.json())
-  .then(data => {
+    .then(response => response.json())
+    .then(data => {
       const chatbox = document.getElementById('chatbox');
       const newMessage = document.createElement('div');
       newMessage.textContent = 'Bot: ' + data.reply;
       chatbox.appendChild(newMessage);
       input.value = '';
-  })
-  .catch(error => {
-      console.error('Error:', error);
-  });
+    })
+    .catch(error => console.error('Error:', error));
 });
