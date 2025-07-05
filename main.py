@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify, send_from_directory
 import os
+from openai import OpenAI
 
 app = Flask(__name__, static_folder='static')
 client = OpenAI()
