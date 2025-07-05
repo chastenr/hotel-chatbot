@@ -1,23 +1,24 @@
-from flask import Flask, request, jsonify, send_from_directory
-import os
+document.querySelector('.send-buton').addEventListener('click', async () => {
+  const input = document.querySelector('.chat-input');
+  const message = input.value.trim();
+  if (!message) return;
 
-app = Flask(__name__, static_folder='static')
+  // Show user's message in the chatbox
+  const chatbox = document.getElementById('chatbox');
+  chatbox.innerHTML += `<div>You: ${message}</div>`;
 
-@app.route('/')
-def index():
-    return send_from_directory(app.static_folder, 'index.html')
+  // Send to backend
+  try {
+      const response = await fetch('/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message })
+      });
+      const data = await response.json();
+      chatbox.innerHTML += `<div>Bot: ${data.reply}</div>`;
+  } catch (error) {
+      chatbox.innerHTML += `<div style="color:red;">Error talking to bot</div>`;
+  }
 
-@app.route('/<path:path>')
-def static_files(path):
-    return send_from_directory(app.static_folder, path)
-
-@app.route('/chat', methods=['POST'])
-def chat():
-    data = request.get_json()
-    message = data.get('message', '')
-    reply = f"You said: {message}"
-    return jsonify({'reply': reply})
-
-if __name__ == "__main__":
-    port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port)
+  input.value = '';
+});
