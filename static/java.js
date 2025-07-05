@@ -1,4 +1,4 @@
-document.querySelector('.send-buton').addEventListener('click', async () => {
+document.querySelector('send-buton').addEventListener('click', async () => {
   const input = document.querySelector('.chat-input');
   const message = input.value.trim();
   if (!message) return;
