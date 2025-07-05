@@ -1,22 +1,18 @@
 from flask import Flask, request, jsonify
-from openai import OpenAI
-import os
 
 app = Flask(__name__)
-client = OpenAI()
+
+@app.route('/')
+def home():
+    return "Hotel chatbot backend is running!"
 
 @app.route('/chat', methods=['POST'])
 def chat():
-    user_message = request.json.get('message')
-    response = client.chat.completions.create(
-        model="o4-mini",
-        messages=[
-            {"role": "system", "content": "You are a friendly hotel assistant."},
-            {"role": "user", "content": user_message}
-        ]
-    )
-    reply = response.choices[0].message.content
+    data = request.get_json()
+    message = data.get('message', '')
+    # simple test reply
+    reply = f"You said: {message}"
     return jsonify({'reply': reply})
 
 if __name__ == "__main__":
-    app.run()
+    app.run(host='0.0.0.0', port=5000)
