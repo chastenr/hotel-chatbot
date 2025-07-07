@@ -22,10 +22,10 @@ app.post('/chat', async (req, res) => {
     console.log("Received message:", userMessage); // Add this line
   
     try {
-      const completion = await openai.chat.completions.create({
-        model: model: 'gpt-3.5-turbo',
-        messages: [{ role: 'user', content: userMessage }],
-      });
+        const completion = await openai.chat.completions.create({
+            model: 'gpt-3.5-turbo',
+            messages: [{ role: 'user', content: userMessage }],
+          });
   
       const botReply = completion.choices[0].message.content;
       console.log("Bot reply:", botReply); // Add this too
