@@ -13,28 +13,26 @@ app.use(express.static(path.join(__dirname, 'static')));
 
 // OpenAI API config (v5)
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
-
-// Chat endpoint
-app.post('/chat', async (req, res) => {
-  const userMessage = req.body.message;
-  console.log("Received message:", userMessage);
-
-  try {
-    const completion = await openai.chat.completions.create({
-      model: 'gpt-3.5-turbo',
-      messages: [{ role: 'user', content: userMessage }],
-    });
-
-    const botReply = completion.choices[0].message.content;
-    console.log("Bot reply:", botReply);
-    res.json({ reply: botReply });
-  } catch (error) {
-    console.error("OpenAI API error:", error);
-    res.status(500).json({ reply: 'Sorry, something went wrong!' });
-  }
-});
+    apiKey: process.env.OPENAI_API_KEY,
+  });
+  
+  app.post('/chat', async (req, res) => {
+    const userMessage = req.body.message;
+  
+    try {
+      const completion = await openai.chat.completions.create({
+        model: 'gpt-3.5-turbo',
+        messages: [{ role: 'user', content: userMessage }],
+      });
+  
+      const botReply = completion.choices[0].message.content;
+      res.json({ reply: botReply });
+    } catch (error) {
+      console.error("OpenAI API error:", error);
+      res.status(500).json({ reply: 'Sorry, something went wrong!' });
+    }
+  });
+  
 
 // Start server
 const PORT = process.env.PORT || 5000;
