@@ -12,10 +12,13 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'static')));
 
 // OpenAI API config
+const { Configuration, OpenAIApi } = require('openai');
+
 const configuration = new Configuration({
-  apiKey: process.env.OPENAI_API_KEY, // from Render env variables
+  apiKey: process.env.OPENAI_API_KEY,
 });
 const openai = new OpenAIApi(configuration);
+
 
 // Chat endpoint
 app.post('/chat', async (req, res) => {
@@ -34,6 +37,7 @@ app.post('/chat', async (req, res) => {
       res.status(500).json({ reply: 'Sorry, something went wrong!' });
     }
   });
+
 
 // Start server
 const PORT = process.env.PORT || 5000;
