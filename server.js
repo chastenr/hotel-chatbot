@@ -30,7 +30,7 @@ app.post('/chat', async (req, res) => {
       const botReply = completion.choices[0].message.content;
       console.log("Bot reply:", botReply);
       res.json({ reply: botReply });
-    } ccatch (error) {
+    } catch (error) {
         console.error("OpenAI API error:", error);
         res.status(500).json({ reply: 'Sorry, something went wrong!' });
       }
