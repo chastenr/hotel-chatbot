@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const { Configuration, OpenAIApi } = require('openai');
+const { OpenAI } = require("openai");
 const path = require('path');
 
 const app = express();
@@ -12,32 +12,27 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'static')));
 
 // OpenAI API config
-const { Configuration, OpenAIApi } = require('openai');
-
-const configuration = new Configuration({
+const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
-const openai = new OpenAIApi(configuration);
-
 
 // Chat endpoint
 app.post('/chat', async (req, res) => {
-    const userMessage = req.body.message;
-  
-    try {
-      const completion = await openai.createChatCompletion({
-        model: 'gpt-4',
-        messages: [{ role: 'user', content: userMessage }],
-      });
-  
-      const botReply = completion.data.choices[0].message.content;
-      res.json({ reply: botReply });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ reply: 'Sorry, something went wrong!' });
-    }
-  });
+  const userMessage = req.body.message;
 
+  try {
+    const completion = await openai.chat.completions.create({
+      model: 'gpt-4',
+      messages: [{ role: 'user', content: userMessage }],
+    });
+
+    const botReply = completion.choices[0].message.content;
+    res.json({ reply: botReply });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ reply: 'Sorry, something went wrong!' });
+  }
+});
 
 // Start server
 const PORT = process.env.PORT || 5000;
