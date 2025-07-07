@@ -8,7 +8,7 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-// Serve static files (HTML, JS, CSS)
+// Serve static files from 'static' folder
 app.use(express.static(path.join(__dirname, 'static')));
 
 // OpenAI API config
